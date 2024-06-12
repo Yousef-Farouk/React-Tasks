@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 
-const baseURL = "http://localhost:3000/Products";
+const baseURL = "http://localhost:3000/products";
 
 
 const getAllProducts = () => axios.get(baseURL);

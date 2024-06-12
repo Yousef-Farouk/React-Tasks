@@ -1,10 +1,12 @@
 
 import React from 'react'
 import { MyproductItem } from './Product-item'
-
 import { productList } from '../../Models/productList'
 
+
 export  function Products() {
+
+
     return (
         <div className='bg-light p-5 text-center'>
             <div className="container">

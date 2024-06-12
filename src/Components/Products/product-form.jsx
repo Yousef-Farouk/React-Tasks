@@ -3,10 +3,19 @@ import { Button, Form } from "react-bootstrap";
 import { useState,useEffect } from 'react';
 import { useNavigate,useParams } from 'react-router-dom';
 import { addNewProduct, editProduct, getProductById } from '../../Api/ProductApi';
+import { addNewProductAction ,updateNewProductAction } from '../../Store/productSlice';
+
+import {useDispatch,useSelector} from 'react-redux'
+
 
 
 
 export default function Productform() {
+
+    const dispatch = useDispatch();
+
+
+
     let [ formData, setFormData ] = useState( {
         name: '',
         price: '',
@@ -36,22 +45,39 @@ export default function Productform() {
         } )
     }
 
-    const addHandler = ( e ) => {
+
+    const addHandler = (e)=>{
         e.preventDefault();
-        if ( id == 0 ) {
-            addNewProduct( formData ).then( () => {
-                navigate( '/products' )
-            } ).catch( error => {
-                console.log( error )
-            } )
-        } else {
-            editProduct( id, formData ).then( () => {
-                navigate( '/products' )
-            } ).catch( error => {
-                console.log("update error :" ,error )
-            } )
+        if(id == 0){
+            dispatch(addNewProductAction(formData)).then(()=>{
+                navigate('/products')
+            })
+        }
+        else {
+
+            dispatch(updateNewProductAction(formData)).then(()=>{
+                navigate('/products')
+            })
         }
     }
+
+
+    // const addHandler = ( e ) => {
+    //     e.preventDefault();
+    //     if ( id == 0 ) {
+    //         addNewProduct( formData ).then( () => {
+    //             navigate( '/products' )
+    //         } ).catch( error => {
+    //             console.log( error )
+    //         } )
+    //     } else {
+    //         editProduct( id, formData ).then( () => {
+    //             navigate( '/products' )
+    //         } ).catch( error => {
+    //             console.log("update error :" ,error )
+    //         } )
+    //     }
+    // }
 
     return (
         <div className="container mt-3">

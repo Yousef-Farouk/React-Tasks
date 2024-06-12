@@ -2,23 +2,41 @@ import React, { useEffect, useState } from 'react'
 import { Table } from 'react-bootstrap'
 import { Link, Outlet, useLoaderData } from 'react-router-dom'
 
-import { getAllProducts,deleteProduct } from '../../Api/ProductApi'
+import { getAllProducts,deleteProduct, addNewProduct } from '../../Api/ProductApi'
+
+import {getAllProductsAction,deleteNewProductAction } from '../../Store/productSlice';
+
+import {useDispatch,useSelector} from 'react-redux'
 
 export default function Producttable() {
 
+    const dispatch = useDispatch();
 
-    const response= useLoaderData()
+    let {products,isLoading,error} = useSelector(state=>state.productSlice)
 
-    let [products,setProduct] = useState(response.data)
+    useEffect(()=>{
+        dispatch(getAllProductsAction())
+    },[])
 
-    const deleteHandler = async ( productId ) => {
-        deleteProduct( productId ).then( response => {
 
-            let filteredList = products.filter( ( product ) => product.id != productId )
-
-            setProduct( filteredList )
-        } ).catch( error => console.log( error ) )
+    
+    const deleteHandler = (productId)=>{
+        dispatch(deleteNewProductAction(productId))
     }
+
+
+    // const response= useLoaderData()
+
+    // let [products,setProduct] = useState(response.data)
+
+    // const deleteHandler = async ( productId ) => {
+    //     deleteProduct( productId ).then( response => {
+
+    //         let filteredList = products.filter( ( product ) => product.id != productId )
+
+    //         setProduct( filteredList )
+    //     } ).catch( error => console.log( error ) )
+    // }
 
 
     return (
@@ -47,7 +65,7 @@ export default function Producttable() {
                                     <Link to={`/products/${product.id}/edit`}>
                                         <i className="mx-2 text-info fs-5 bi bi-pencil-square"></i>
                                     </Link>
-                                        <i onClick={()=>deleteHandler(product.id)} className="mx-2 text-danger fs-5 bi bi-trash3-fill"></i>
+                                        <i  className="mx-2 text-danger fs-5 bi bi-trash3-fill" onClick={()=>deleteHandler(product.id)}></i>
                                     </div>
                                 </div>  
                             </div>
